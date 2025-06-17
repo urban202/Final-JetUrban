@@ -1,0 +1,54 @@
+.container-about {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+    margin: 10px;
+}
+
+.container-about div {
+    flex: 1 1 30%;
+    min-width: 300px;
+    max-width: 100%;
+    text-align: center;
+    border: 2px solid rgb(246, 169, 61);
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+    /* REMOVE fixed height */
+    /* height: 800px; */
+}
+
+.p-long {
+    font-size: 19px;
+    line-height: 1.6;
+}
+
+.column_center {
+    order: 2;
+}
+
+/* Responsive Design */
+@media (max-width: 1500px) {
+    .container-about {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px;
+        gap: 2rem;
+    }
+
+    .container-about div {
+        width: 100%;
+    }
+
+    .p-long {
+        font-size: 18px;
+    }
+
+    .column_center {
+        order: 2;
+    }
+}
