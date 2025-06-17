@@ -1,132 +1,105 @@
-import React from 'react'
-import './Utilities.css'
+import React from 'react';
+import './Utilities.css';
 
 const Utilities = () => {
   return (
-    
-  <div id="p-utilities" className="container-free">
-    
-  <div className="notice-container">
-  <div className='solid'></div>
-  <br/>  <br/>  <br/>
-  <h2>    
-  As A Security Measure 
-  </h2>
-        
-        <p >
-        Jet urban clothing admin locked the opensea account @urbanwarriors wallet address <br/> 
-       
+    <div id="p-utilities" className="container-free">
+
+      {/* Security Notice */}
+      <div className="notice-container">
+        <div className='solid'></div>
+        <br /><br /><br />
+        <h2>As A Security Measure</h2>
+        <p>
+          Jet Urban Clothing admin locked the OpenSea account @urbanwarriors wallet address.
         </p>
-
-         
-        <h6 >
-        0x13E051C962Ed2870F9121bF5F827F653355CA10D
-        </h6>
-        
-       
-        <p >
-        If you own any from this collection you will not be able to buy,sell or transfer!!!! <br/> 
-      
+        <h6>0x13E051C962Ed2870F9121bF5F827F653355CA10D</h6>
+        <p>
+          If you own any from this collection you will not be able to buy, sell, or transfer!
         </p>
-
-        <br/>
-
+        <br />
         <h2>
-        All previous holders of the golden boy collection <br/> will be air dropped the nfts the previous when minting from <br/> (official name & link to this site) goes live
+          All previous holders of the Golden Boy collection will be airdropped the NFTs once minting from <br />
+          (official name & link to this site) goes live.
         </h2>
-  </div>
-
-<div className='solid'></div>
-<br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>
-  <h1 >utilities</h1>
-    <h2 >10% to 15% OFF</h2>
-        
-
-        <h3 > <br/> On all merchandise EXCEPT for NEW RELEASES. <br/>  <br/> 
-New Releases with wearable NFTS.</h3> <h6>(Discounts depends on traits.) </h6>  <br/> <br/>       
-
-
-    
-  
-
-  <ul className="cards">
-    <li className="card">
-      <div>
-        <h4 >Voting rights</h4>
-        <div>
-  
-        </div>
       </div>
 
-    </li>
+      {/* Utilities Section */}
+      <div className='solid'></div>
+      <br /><br /><br /><br /><br /><br /><br /><br /><br />
+      <h1>Utilities</h1>
+      <h2>10% to 15% OFF</h2>
+      <h3>
+        <br />On all merchandise EXCEPT for NEW RELEASES.
+        <br /><br />
+        New Releases with wearable NFTs.
+      </h3>
+      <h6>(Discounts depend on traits.)</h6>
+      <br /><br />
 
+      {/* Utility Cards */}
+      <ul className="cards">
 
-    <li className="card">
+        <li className="card">
+          <div>
+            <h4>Voting Rights</h4>
+          </div>
+        </li>
+
+        <li className="card">
+          <div>
+            <h4>GOLDEN BOY OG ROLES</h4>
+            <p>
+              Holders of the Golden Boy collection will get an OG role that allows them to mint the next generation at a discounted price and vote on changes in the community.
+            </p>
+          </div>
+        </li>
+
+        <li className="card">
+          <div>
+            <h4>EARLY ACCESS</h4>
+            <p>
+              Get the drop on the latest NFTs, Jet Urban Clothing, and Urban Warriors merch 15–30 days before the official 🚀 launch date.
+            </p>
+          </div>
+        </li>
+
+        <li className="card">
+          <div>
+            <h4>Whitelist for 2nd Gen</h4>
+          </div>
+        </li>
+
+      </ul>
+
+      {/* Golden Boy Battle Zone */}
       <div>
-        <h4>GOLDEN BOY OG ROLES</h4>
-        <div>
-          <p>The  holders of  the golden boy collection will get a og role that will allow you to mint the next generation a discounted price & vote on changes & routes to be taken in the community</p>          </div>
-      </div>
+        <li className="card">
+          <div>
+            <h5>Golden Boy Battle Zone</h5>
+            <div className="ut-battlezone">
 
-    </li>
+              <p className="column-center">
+                The weight classes include: featherweight, lightweight, middleweight, and heavyweight.
+                The winner will be randomized.
+              </p>
 
+              <p className="column-left">
+                Your weight class will depend on the value of your NFT and token holdings.
+                You will not be able to box anyone outside of your weight class.
+              </p>
 
-    <li className="card">
-      <div>
-        <h4>EARLY ACCESS</h4>
-        <div>
-          <p>Get the drop on the latest nfts,jet urban clothing & 
-            urban warriors  merch in the tribe 15-30
-             before the official 🚀  date.</p>
-        </div>
-      </div>
+              <p className="column-right">
+                Wage your Golden Boy or Warriors NFTs in the Warriors Stadium — in the ring.
+              </p>
 
-    </li>
-
-
-    <li className="card">
-      <div>
-        <h4>Whitelist for 2nd gen</h4>
-        <div>
             </div>
-      </div>
- 
-    </li>
-
-
-  
-  </ul>
-
-  <div>
-    <li className="card">
-      <div>
-        <h5>golden boy battle zone</h5>
-        <div>
-
-        <div className="ut-battlezone">
-              <p className="column-center">The weight classes includes: <br/><br/>  Featherweight <br/> Lightweight <br/> Middleweight <br/>  Heavyweight <br/> <br/>  The winner will be a randomized.</p>
-              <p className="column-left">Your weight className will depend on your NFTs polygon price. </p> <p> You will not be able to box anyone outside of your weight class. </p>
-              <p className="column-right"> Wage your warriors or golden boys & warriors NFTS  in the warriors stadium in the ring</p>
-        </div>
-
-
-
-
-
-
-        </div>
+          </div>
+        </li>
       </div>
 
-    </li>
     </div>
-      
+  );
+};
 
-
-
-</div>
-
-
-  )
-}
-
-export default Utilities
+export default Utilities;
