@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto & NFT FAQ Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .chat-container {
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .message.assistant .message-bubble {
+            background: white;
+            border: 1px solid #e9ecef;
+            color: #333;
+        }
+        
+        .message.user .message-bubble {
+            background: #667eea;
+            color: white;
+        }
+        
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .assistant-avatar {
+            background: #667eea;
+            color: white;
+        }
+        
+        .user-avatar {
+            background: #28a745;
+            color: white;
+        }
+        
+        .input-area {
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            background: white;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .input-field {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .input-field:focus {
+            border-color: #667eea;
+        }
+        
+        .send-button {
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .send-button:hover {
+            background: #5a6fd8;
+        }
+        
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        .quick-questions {
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            background: #f8f9fa;
+        }
+        
+        .quick-questions h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .quick-button {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        
+        .quick-button:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .admin-panel {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 20px;
+            display: none;
+        }
+        
+        .admin-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .admin-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .faq-form {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .faq-form input, .faq-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .faq-form button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .faq-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .faq-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .faq-item h4 {
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .faq-item p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .faq-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .faq-actions button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .edit-btn { background: #ffc107; color: #000; }
+        .delete-btn { background: #dc3545; color: white; }
+        .save-btn { background: #28a745; color: white; }
+        .cancel-btn { background: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="position: relative;">
+            <h1>🚀 Crypto & NFT Assistant</h1>
+            <p>Ask me anything about cryptocurrency, NFTs, blockchain, and trading!</p>
+            <button class="admin-toggle" onclick="toggleAdmin()">⚙️ Admin</button>
+        </div>
+        
+        <div class="chat-container">
+            <div class="messages" id="messages">
+                <div class="message assistant">
+                    <div class="avatar assistant-avatar">🤖</div>
+                    <div class="message-bubble">
+                        Hi! I'm your crypto and NFT assistant. I can help answer questions about blockchain technology, NFTs, trading, wallets, and more. What would you like to know?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <div class="input-container">
+                    <input type="text" class="input-field" id="messageInput" placeholder="Ask about NFTs, crypto, blockchain, trading..." onkeypress="handleKeyPress(event)">
+                    <button class="send-button" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-questions">
+            <h3>📋 Popular Questions</h3>
+            <div class="quick-buttons">
+                <div class="quick-button" onclick="askQuestion('What is an NFT?')">What is an NFT?</div>
+                <div class="quick-button" onclick="askQuestion('How do I buy an NFT?')">How to buy NFTs</div>
+                <div class="quick-button" onclick="askQuestion('What are gas fees?')">Gas fees</div>
+                <div class="quick-button" onclick="askQuestion('How do I create an NFT?')">Create NFT</div>
+                <div class="quick-button" onclick="askQuestion('What is a crypto wallet?')">Crypto wallet</div>
+                <div class="quick-button" onclick="askQuestion('How to avoid NFT scams?')">Avoid scams</div>
+            </div>
+        </div>
+        
+        <div class="admin-panel" id="adminPanel">
+            <h3>📝 FAQ Management</h3>
+            <div class="faq-form">
+                <input type="text" id="newQuestion" placeholder="Enter new question...">
+                <textarea id="newAnswer" placeholder="Enter answer..." rows="3"></textarea>
+                <button onclick="addFAQ()">➕ Add FAQ</button>
+            </div>
+            <div class="faq-list" id="faqList"></div>
+        </div>
+    </div>
+
+    <script>
+        // FAQ Database - You can add more questions here
+        let faqDatabase = [
+            {
+                id: 1,
+                question: "What is an NFT?",
+                answer: "An NFT (Non-Fungible Token) is a unique digital asset that represents ownership of a specific item or piece of content on a blockchain. Unlike cryptocurrencies, each NFT is unique and cannot be replaced with something else. NFTs can represent digital art, music, videos, virtual real estate, and more.",
+                keywords: ["nft", "non-fungible token", "what is", "definition", "digital asset"]
+            },
+            {
+                id: 2,
+                question: "How do I buy an NFT?",
+                answer: "To buy an NFT: 1) Set up a crypto wallet (like MetaMask), 2) Purchase cryptocurrency (usually ETH), 3) Connect your wallet to an NFT marketplace (OpenSea, Rarible, etc.), 4) Browse and select an NFT, 5) Click 'Buy Now' or place a bid, 6) Confirm the transaction in your wallet. The NFT will then be transferred to your wallet.",
+                keywords: ["buy", "purchase", "how to buy", "acquire", "marketplace"]
+            },
+            {
+                id: 3,
+                question: "What are gas fees?",
+                answer: "Gas fees are transaction costs paid to miners or validators on a blockchain network to process and validate transactions. On Ethereum, gas fees fluctuate based on network congestion. Higher fees mean faster transaction processing. You can check current gas prices on sites like GasTracker before making transactions.",
+                keywords: ["gas fees", "transaction costs", "ethereum", "fees", "cost"]
+            },
+            {
+                id: 4,
+                question: "How do I create and mint an NFT?",
+                answer: "To create and mint an NFT: 1) Create your digital artwork or content, 2) Choose a blockchain (Ethereum, Polygon, etc.), 3) Set up a crypto wallet, 4) Select an NFT marketplace that supports minting, 5) Upload your file and add metadata (title, description, properties), 6) Pay the minting fee, 7) Your NFT will be created and added to your wallet.",
+                keywords: ["create", "mint", "minting", "make nft", "upload", "artwork"]
+            },
+            {
+                id: 5,
+                question: "What is a crypto wallet?",
+                answer: "A crypto wallet is a digital tool that stores your cryptocurrency and NFTs. It contains your private keys, which prove ownership of your digital assets. Popular wallets include MetaMask (browser extension), Trust Wallet (mobile), and Coinbase Wallet. Always keep your seed phrase safe and never share your private keys.",
+                keywords: ["wallet", "metamask", "private keys", "seed phrase", "store"]
+            },
+            {
+                id: 6,
+                question: "What is the difference between Layer 1 and Layer 2?",
+                answer: "Layer 1 refers to the main blockchain (like Ethereum, Bitcoin). Layer 2 are secondary networks built on top of Layer 1 to improve scalability and reduce costs. Examples include Polygon, Arbitrum, and Optimism. Layer 2 solutions process transactions faster and cheaper while still benefiting from Layer 1 security.",
+                keywords: ["layer 1", "layer 2", "scaling", "polygon", "arbitrum", "blockchain"]
+            },
+            {
+                id: 7,
+                question: "How do I avoid NFT scams?",
+                answer: "To avoid NFT scams: 1) Verify the official collection and creator, 2) Check the contract address, 3) Be wary of deals that seem too good to be true, 4) Don't click suspicious links, 5) Use official marketplace websites, 6) Verify social media accounts, 7) Never share your private keys or seed phrase, 8) Research the project team and roadmap.",
+                keywords: ["scams", "safety", "security", "avoid", "protect", "fraud"]
+            },
+            {
+                id: 8,
+                question: "What is staking in crypto?",
+                answer: "Staking is the process of holding and locking cryptocurrency in a wallet to support blockchain network operations and earn rewards. It's used in Proof-of-Stake networks. You can stake through exchanges, dedicated staking platforms, or run your own validator node. Staking rewards vary by network and typically range from 4-12% annually.",
+                keywords: ["staking", "stake", "rewards", "proof of stake", "validator", "earn"]
+            }
+        ];
+
+        let editingId = null;
+
+        function findBestMatch(userQuestion) {
+            const question = userQuestion.toLowerCase();
+            let bestMatch = null;
+            let maxScore = 0;
+
+            faqDatabase.forEach(faq => {
+                let score = 0;
+                
+                // Check if keywords match
+                faq.keywords.forEach(keyword => {
+                    if (question.includes(keyword.toLowerCase())) {
+                        score += 2;
+                    }
+                });
+                
+                // Check if question words match
+                const questionWords = faq.question.toLowerCase().split(' ');
+                questionWords.forEach(word => {
+                    if (question.includes(word) && word.length > 2) {
+                        score += 1;
+                    }
+                });
+                
+                if (score > maxScore) {
+                    maxScore = score;
+                    bestMatch = faq;
+                }
+            });
+
+            return maxScore > 2 ? bestMatch : null;
+        }
+
+        function addMessage(role, content) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = `avatar ${role}-avatar`;
+            avatar.textContent = role === 'assistant' ? '🤖' : '👤';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = content;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showTyping() {
+            const messagesDiv = document.getElementById('messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typing-indicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar assistant-avatar';
+            avatar.textContent = '🤖';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.innerHTML = `
+                <div class="typing-indicator">
+                    <span>Thinking</span>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            
+            typingDiv.appendChild(avatar);
+            typingDiv.appendChild(bubble);
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage('user', message);
+            input.value = '';
+            
+            // Show typing indicator
+            showTyping();
+            
+            // Find answer
+            setTimeout(() => {
+                hideTyping();
+                const faqMatch = findBestMatch(message);
+                
+                if (faqMatch) {
+                    addMessage('assistant', faqMatch.answer);
+                } else {
+                    addMessage('assistant', "I'm sorry, I don't have a specific answer for that question in my database yet. However, I can help with common crypto and NFT questions. Try asking about NFTs, wallets, gas fees, buying/selling, or use the quick questions below!");
+                }
+            }, 1500);
+        }
+
+        function askQuestion(question) {
+            document.getElementById('messageInput').value = question;
+            sendMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function toggleAdmin() {
+            const adminPanel = document.getElementById('adminPanel');
+            if (adminPanel.style.display === 'none' || adminPanel.style.display === '') {
+                adminPanel.style.display = 'block';
+                renderFAQList();
+            } else {
+                adminPanel.style.display = 'none';
+            }
+        }
+
+        function addFAQ() {
+            const question = document.getElementById('newQuestion').value.trim();
+            const answer = document.getElementById('newAnswer').value.trim();
+            
+            if (!question || !answer) {
+                alert('Please enter both question and answer');
+                return;
+            }
+            
+            const newId = Math.max(...faqDatabase.map(faq => faq.id)) + 1;
+            const keywords = question.toLowerCase().split(' ').filter(word => word.length > 2);
+            
+            faqDatabase.push({
+                id: newId,
+                question: question,
+                answer: answer,
+                keywords: keywords
+            });
+            
+            document.getElementById('newQuestion').value = '';
+            document.getElementById('newAnswer').value = '';
+            renderFAQList();
+        }
+
+        function editFAQ(id) {
+            editingId = id;
+            renderFAQList();
+        }
+
+        function saveFAQ(id) {
+            const question = document.getElementById(`question-${id}`).value;
+            const answer = document.getElementById(`answer-${id}`).value;
+            
+            const faq = faqDatabase.find(f => f.id === id);
+            if (faq) {
+                faq.question = question;
+                faq.answer = answer;
+                faq.keywords = question.toLowerCase().split(' ').filter(word => word.length > 2);
+            }
+            
+            editingId = null;
+            renderFAQList();
+        }
+
+        function cancelEdit() {
+            editingId = null;
+            renderFAQList();
+        }
+
+        function deleteFAQ(id) {
+            if (confirm('Are you sure you want to delete this FAQ?')) {
+                faqDatabase = faqDatabase.filter(f => f.id !== id);
+                renderFAQList();
+            }
+        }
+
+        function renderFAQList() {
+            const faqList = document.getElementById('faqList');
+            faqList.innerHTML = '';
+            
+            faqDatabase.forEach(faq => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'faq-item';
+                
+                if (editingId === faq.id) {
+                    faqItem.innerHTML = `
+                        <input type="text" id="question-${faq.id}" value="${faq.question}" style="width: 100%; margin-bottom: 10px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <textarea id="answer-${faq.id}" style="width: 100%; margin-bottom: 10px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; height: 80px;">${faq.answer}</textarea>
+                        <div class="faq-actions">
+                            <button class="save-btn" onclick="saveFAQ(${faq.id})">💾 Save</button>
+                            <button class="cancel-btn" onclick="cancelEdit()">❌ Cancel</button>
+                        </div>
+                    `;
+                } else {
+                    faqItem.innerHTML = `
+                        <h4>${faq.question}</h4>
+                        <p>${faq.answer.substring(0, 100)}${faq.answer.length > 100 ? '...' : ''}</p>
+                        <div class="faq-actions">
+                            <button class="edit-btn" onclick="editFAQ(${faq.id})">✏️ Edit</button>
+                            <button class="delete-btn" onclick="deleteFAQ(${faq.id})">🗑️ Delete</button>
+                        </div>
+                    `;
+                }
+                
+                faqList.appendChild(faqItem);
+            });
+        }
+
+        // Initialize the FAQ list
+        renderFAQList();
+    </script>
+</body>
+</html>
